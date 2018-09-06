@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@drawable/bg_round_white"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp">
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
+            android:lines="1"
+            android:text="标题阿斯蒂芬"
+            android:textColor="@color/c333333"
+            android:textSize="15sp" />
+
+
+        <ImageView
+            android:id="@+id/iv_state"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/resolved_icon" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:maxLines="2"
+            android:text="标题阿斯蒂芬"
+            android:textColor="@color/c808080"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_content"
+            android:layout_marginTop="10dp"
+            android:text="ID：1254562532"
+            android:textColor="@color/cb3b3b3"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_content"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:text="201852233322523"
+            android:textColor="@color/cb3b3b3"
+            android:textSize="11sp" />
+    </RelativeLayout>
+
+</LinearLayout>

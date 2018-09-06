@@ -1,0 +1,150 @@
+package com.realpower.petition.fragment;
+
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import com.realpower.petition.R;
+import com.realpower.petition.activity.PetitionNewActivity_;
+import com.realpower.petition.activity.SuggestDetailActivity_;
+import com.realpower.petition.adapter.SuggestionLAdapter;
+import com.realpower.petition.bean.SuggestionBean;
+import com.realpower.petition.net.MyCallback;
+import com.realpower.petition.net.param.IdParam;
+import com.realpower.petition.net.result.SuggestionResult;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+
+/**
+ * Created by ruipu on 2018/8/24.
+ */
+@EFragment(R.layout.fragment_suggest_children)
+public class SuggestChildrenFragment extends BaseFragment {
+    @ViewById(R.id.lv_suggest)
+    ListView lv_suggest;
+    SuggestionLAdapter suggestionAdapter;
+    private List<SuggestionBean> datas;
+    private int petitionCategory = 0;//yijian类别
+
+
+    @AfterViews
+    void onInitViews() {
+        View headview = View.inflate(getContext(), R.layout.listview_headview, null);
+        View booterView = View.inflate(getContext(), R.layout.listview_booterview, null);
+        datas = new ArrayList<>();
+        suggestionAdapter = new SuggestionLAdapter(getContext(), datas);
+        lv_suggest.addHeaderView(headview);
+        lv_suggest.addFooterView(booterView);
+        lv_suggest.setAdapter(suggestionAdapter);
+        lv_suggest.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SuggestDetailActivity_.intent(getActivity()).suggestionId(datas.get(position-1).getSuggestionId()).start();
+            }
+        });
+
+        if (petitionCategory == 0) {
+
+            getData();
+        } else {
+            searchSuggestion(petitionCategory);
+        }
+
+
+    }
+
+    public void searchSuggestionByCriteria(String s) {
+        Call<SuggestionResult> call = apiService.suggestionByCriteria(new IdParam("", s));
+        call.enqueue(new MyCallback<SuggestionResult>() {
+            @Override
+            public void onSuccessRequest(SuggestionResult result) {
+                setData(result.getMessage());
+            }
+
+            @Override
+            public void afterRequest() {
+
+            }
+
+            @Override
+            public void onFailureRequest(Call<SuggestionResult> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+
+    private void searchSuggestion(int position) {
+        Call<SuggestionResult> call = apiService.suggestionByStatus(new IdParam("", position + ""));
+        call.enqueue(new MyCallback<SuggestionResult>() {
+            @Override
+            public void onSuccessRequest(SuggestionResult result) {
+                setData(result.getMessage());
+            }
+
+            @Override
+            public void afterRequest() {
+
+            }
+
+            @Override
+            public void onFailureRequest(Call<SuggestionResult> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void setData(List<SuggestionBean> message) {
+        datas.clear();
+        datas.addAll(message);
+        suggestionAdapter.notifyDataSetChanged();
+    }
+
+    public void getData() {
+        Call<SuggestionResult> call = apiService.getSuggestion();
+        call.enqueue(new MyCallback<SuggestionResult>() {
+            @Override
+            public void onSuccessRequest(SuggestionResult result) {
+                if ("2".equals(result.getDesc().getCode())) {
+                    datas.clear();
+                    datas.addAll(result.getMessage());
+                    suggestionAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterRequest() {
+
+            }
+
+            @Override
+            public void onFailureRequest(Call<SuggestionResult> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+    @Click({R.id.petition_btn})
+    void onViewClick(View view) {
+        switch (view.getId()) {
+            case R.id.petition_btn:
+                PetitionNewActivity_.intent(getContext()).start();
+                break;
+        }
+    }
+
+    public void setCategory(int category) {
+        petitionCategory = category;
+
+    }
+}

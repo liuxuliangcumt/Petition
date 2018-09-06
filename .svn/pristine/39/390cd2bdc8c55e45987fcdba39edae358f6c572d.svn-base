@@ -1,0 +1,23 @@
+package com.realpower.petition.util;
+
+import android.graphics.drawable.GradientDrawable;
+/**
+ * Created by ruipu on 2018/8/30.
+ * 渐变加圆角 省去写drawable文件
+ */
+
+public class GradientRoundDrawable extends GradientDrawable {
+
+
+    private GradientRoundDrawable() {
+
+    }
+
+
+    @Override
+    public void setOrientation(Orientation orientation) {
+        super.setOrientation(orientation);
+    }
+
+
+}

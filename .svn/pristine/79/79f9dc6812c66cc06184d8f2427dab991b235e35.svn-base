@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.PetitionNewActivity">
+
+    <include layout="@layout/activitytitle_common" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingLeft="33dp"
+            android:paddingRight="33dp"
+            android:paddingTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联名人"
+                android:textColor="@color/c333333"
+                android:textSize="19sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_jointer"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_jointer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:hint="请选择"
+                    android:lines="1"
+                    android:textSize="15sp"
+                    android:theme="@style/MyEdittext" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/iv_arrow" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="事发地点"
+                android:textColor="@color/c333333"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:drawableRight="@drawable/arrow_bottom"
+                android:gravity="center"
+                android:hint="请选择"
+                android:theme="@style/MyEdittext"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="诉求类别"
+                android:textColor="@color/c333333"
+                android:textSize="19sp" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:drawableRight="@drawable/arrow_bottom"
+                android:gravity="center"
+                android:hint="请选择"
+                android:theme="@style/MyEdittext"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:text="诉求标题"
+                android:textColor="@color/c333333"
+                android:textSize="19sp" />
+
+            <com.realpower.petition.views.ClearEditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:maxLength="50"
+                android:textColor="@color/c808080"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="18dp"
+                android:text="联系方式"
+                android:textColor="@color/c333333"
+                android:textSize="19sp" />
+
+            <com.realpower.petition.views.ClearEditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:lines="1"
+                android:textColor="@color/c808080"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="诉求详情"
+                android:textColor="@color/c333333"
+                android:textSize="19sp" />
+
+            <com.realpower.petition.views.ClearEditText
+                android:id="@+id/et_petitionDetail"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginTop="18dp"
+                android:maxLength="200"
+                android:textColor="@color/c808080"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="上传照片"
+                android:textColor="@color/c333333"
+                android:textSize="19sp" />
+
+            <com.realpower.petition.views.CustomGridVeiw
+                android:id="@+id/GV_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:horizontalSpacing="10dp"
+                android:numColumns="3"
+                android:paddingBottom="20dp"
+                android:verticalSpacing="8dp"></com.realpower.petition.views.CustomGridVeiw>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="上传视频"
+                android:textColor="@color/c333333"
+                android:textSize="19sp" />
+
+            <com.realpower.petition.views.CustomListView
+                android:id="@+id/lv_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.realpower.petition.views.CustomListView>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="上传语音"
+                android:textColor="@color/c333333"
+                android:textSize="19sp"
+                android:visibility="gone" />
+
+            <com.realpower.petition.views.CustomListView
+                android:id="@+id/lv_voice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"></com.realpower.petition.views.CustomListView>
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_ok"
+                android:layout_width="280dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="45dp"
+                android:layout_marginTop="75dp"
+                android:background="@drawable/bg_login_btn"
+                android:gravity="center"
+                android:text="确认添加"
+                android:textColor="@color/white"
+                android:textSize="19sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

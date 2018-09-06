@@ -1,0 +1,99 @@
+package com.realpower.petition.fragment;
+
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.realpower.petition.R;
+import com.realpower.petition.bean.BaseInfoBean;
+import com.realpower.petition.net.MyCallback;
+import com.realpower.petition.net.result.BaseInfoResult;
+import com.realpower.petition.net.result.StringResult;
+import com.realpower.petition.util.GlideCircleTransform;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
+import retrofit2.Call;
+
+/**
+ * Created by Administrator on 2017/11/16.
+ */
+@EFragment(R.layout.fragment_info)
+public class InfoFragment extends BaseFragment {
+
+    @ViewById
+    TextView tv_name;
+    @ViewById
+    TextView tv_idcard;
+
+    @ViewById
+    TextView tv_phone;
+
+    @ViewById
+    TextView tv_sex;
+    @ViewById
+    TextView tv_address;
+
+    @ViewById
+    TextView et_address;
+
+    @ViewById
+    ImageView iv_head;
+
+    @AfterViews
+    void initViews() {
+        getData();
+    }
+
+    private void getData() {
+        Call<BaseInfoResult> call = apiService.getBaseInfo();
+        call.enqueue(new MyCallback<BaseInfoResult>() {
+            @Override
+            public void onSuccessRequest(BaseInfoResult result) {
+                if ("1".equals(result.getStatus())) {
+                    setData(result.getMessage());
+                }
+
+            }
+
+            @Override
+            public void afterRequest() {
+
+            }
+
+            @Override
+            public void onFailureRequest(Call<BaseInfoResult> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void setData(BaseInfoBean message) {
+        tv_name.setText(message.getMonitoredRealname());
+        tv_idcard.setText(message.getMonitoredAddress());
+        tv_idcard.setText(message.getMonitoredIdcard());
+        tv_phone.setText(message.getMonitoredPhone());
+        tv_address.setText(message.getMonitoredAddress());
+        et_address.setText(message.getPermanentAddress());
+        RequestOptions options = new RequestOptions();
+        options.transform(new GlideCircleTransform(getContext()));
+        Glide.with(getContext()).load(message.getAvatar()).apply(options).into(iv_head);
+
+
+        if (message.getMonitoredIdcard().length() != 0) {
+            String idcard = message.getMonitoredIdcard();
+            int sex = Integer.parseInt(String.valueOf(idcard.charAt(idcard.length() - 2)));
+            if (sex % 2 == 0) {
+                tv_sex.setText("女");
+            } else {
+                tv_sex.setText("男");
+            }
+
+
+        }
+    }
+
+}

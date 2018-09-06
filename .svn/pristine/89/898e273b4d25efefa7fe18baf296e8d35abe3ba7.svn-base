@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.realpower.petition.views.SwipeMenuView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@drawable/bg_common"
+    android:paddingBottom="1dp">
+
+    <LinearLayout
+        android:id="@+id/swipe_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_6">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/avatar" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="28dp"
+            android:layout_weight="1"
+            android:text="sdfg"
+            android:textColor="@color/c333333"
+            android:textSize="16sp" />
+
+        <CheckBox
+            android:id="@+id/cb_associa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="41dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/delete_chooseperson"
+        android:textColor="@android:color/white" />
+
+</com.realpower.petition.views.SwipeMenuView>

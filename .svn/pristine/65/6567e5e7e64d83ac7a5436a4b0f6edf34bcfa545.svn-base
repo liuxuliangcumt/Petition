@@ -1,0 +1,66 @@
+package com.realpower.petition.activity;
+
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import com.realpower.petition.R;
+import com.realpower.petition.fragment.AddInfoFragment_;
+import com.realpower.petition.fragment.InfoFragment_;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@EActivity
+public class ResetInfoActivity extends BaseActivity {
+    @ViewById(R.id.Tab_info)
+    TabLayout Tab_info;
+
+    @ViewById(R.id.vp_info)
+    ViewPager vp_info;
+    private MyViewPagerAdapter mAdapter;
+    private List<Fragment> fragments;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_reset_info);
+    }
+
+    @AfterViews
+    void initView() {
+        setTitleName("修改个人信息");
+        Tab_info.addTab(Tab_info.newTab().setText("基本信息"));
+        Tab_info.addTab(Tab_info.newTab().setText("补充信息"));
+
+        mAdapter = new MyViewPagerAdapter(getSupportFragmentManager());
+        fragments = new ArrayList<>();
+        fragments.add(InfoFragment_.builder().build());
+        fragments.add(AddInfoFragment_.builder().build());
+        vp_info.setAdapter(mAdapter);
+        vp_info.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(Tab_info));
+        Tab_info.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(vp_info));
+    }
+
+    private class MyViewPagerAdapter extends FragmentPagerAdapter {
+
+        public MyViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    }
+}

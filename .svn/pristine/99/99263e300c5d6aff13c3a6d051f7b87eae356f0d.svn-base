@@ -1,0 +1,193 @@
+package com.realpower.petition.net;
+
+import android.support.annotation.StringRes;
+
+import com.realpower.petition.bean.BaseInfoBean;
+import com.realpower.petition.bean.PetitionDetailBean;
+import com.realpower.petition.net.param.AddGpsParam;
+import com.realpower.petition.net.param.AppealIdParam;
+import com.realpower.petition.net.param.AssociateParam;
+import com.realpower.petition.net.param.ChangePhoneParam;
+import com.realpower.petition.net.param.CodeParam;
+import com.realpower.petition.net.param.IdParam;
+import com.realpower.petition.net.param.LoginParam;
+import com.realpower.petition.net.param.PageParam;
+import com.realpower.petition.net.param.PagingParam;
+import com.realpower.petition.net.param.PetitionAddParam;
+import com.realpower.petition.net.param.PetitionCommentParam;
+import com.realpower.petition.net.param.PhoneInfoParam;
+import com.realpower.petition.net.param.RegisteParam;
+import com.realpower.petition.net.param.ResetPassworParam;
+import com.realpower.petition.net.param.StringIdParam;
+import com.realpower.petition.net.param.SugestionCommentParam;
+import com.realpower.petition.net.param.SuggestionAddParam;
+import com.realpower.petition.net.param.SuggestionIdParam;
+import com.realpower.petition.net.param.UpdateOtherInfoParam;
+import com.realpower.petition.net.param.WeatherParam;
+import com.realpower.petition.net.result.AssociaterResult;
+import com.realpower.petition.net.result.BaseInfoResult;
+import com.realpower.petition.net.result.LoginResult;
+import com.realpower.petition.net.result.NewsResult;
+import com.realpower.petition.net.result.NoticeResult;
+import com.realpower.petition.net.result.OtherInfoResult;
+import com.realpower.petition.net.result.PetitionDetailResult;
+import com.realpower.petition.net.result.PetitionTypeResult;
+import com.realpower.petition.net.result.RegulationResult;
+import com.realpower.petition.net.result.ShuquResult;
+import com.realpower.petition.net.result.StreetResult;
+import com.realpower.petition.net.result.StringResult;
+import com.realpower.petition.net.result.SuggestionDetailResult;
+import com.realpower.petition.net.result.SuggestionResult;
+import com.realpower.petition.net.result.WeatherResult;
+
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+
+/**
+ * Created by Administrator on 2017/12/9.
+ */
+public interface ApiService {
+
+    /*@POST(UrlConstants.urlHead)
+    Call<PetitionType> login(@QueryMap Map<String, String> loginMap);
+
+    @POST(UrlConstants.urlHead)
+    Flowable<LoginResponse> login2(@QueryMap Map<String, String> loginMap);*/
+
+    @POST("login")
+    Call<LoginResult> login(@Body LoginParam param);
+
+    @POST("monitoredapp/category/getAll")
+    Call<PetitionTypeResult> getType();
+
+    @POST("monitoredapp/area/getAll")
+    Call<StreetResult> getStreet();
+
+    //注册接口发送验证码
+    @POST("monitoredapp/sms/regsendCode")
+    Call<StringResult> getRegistCode(@Body CodeParam param);
+
+    //忘记密码/重置密码接口发送验证码
+    @POST("monitoredapp/sms/fpwdsendCode")
+    Call<StringResult> getResetPswCode(@Body CodeParam param);
+
+    //更换绑定手机号发送验证码
+    @POST("monitoredapp/sms/changesendCode")
+    Call<StringResult> getCPhoneCode(@Body CodeParam param);
+
+    @POST("monitoredapp/monitored/register")
+    Call<StringResult> regist(@Body RegisteParam param);
+
+    @POST("monitoredapp/associate/add")
+    Call<StringResult> associateAdd(@Body AssociateParam param);
+
+    @POST("monitoredapp/associate/selectAll")
+    Call<AssociaterResult> getAssociate();
+
+
+    @POST("monitoredapp/associate/delete")
+    Call<StringResult> deleteAssociate(@Body StringIdParam param);
+
+    @POST("monitoredapp/appeal/add")
+        //新建述求
+    Call<StringResult> petitionAdd(@Body PetitionAddParam param);
+
+    @POST("monitoredapp/appeal/selectAll")
+    Call<ShuquResult> shuquAll();
+
+    @POST("monitoredapp/appeal/selectById")
+    Call<PetitionDetailResult> shuquDetail(@Body IdParam param);
+
+    @POST("monitoredapp/suggestion/add")
+    Call<StringResult> suggestionAdd(@Body SuggestionAddParam param);
+
+    @POST("monitoredapp/suggestion/selectAll")
+    Call<SuggestionResult> getSuggestion();
+
+    @POST("monitoredapp/suggestion/selectById")
+    Call<SuggestionDetailResult> suggestionDetail(@Body IdParam param);
+
+    @POST("monitoredapp/suggestion/selectByStatus")
+    Call<SuggestionResult> suggestionByStatus(@Body IdParam param);
+
+    @POST("monitoredapp/suggestion/selectByCriteria")
+    Call<SuggestionResult> suggestionByCriteria(@Body IdParam param);
+
+    @POST("monitoredapp/appeal/selectByStatus")
+    Call<ShuquResult> searchPetitionByStatus(@Body IdParam param);
+
+    @POST("monitoredapp/appeal/selectByCriteria")
+    Call<ShuquResult> searchPetitionByCriteria(@Body IdParam param);
+
+    /*忘记密码 重置密码*/
+    @POST("monitoredapp/monitored/forgetPwd")
+    Call<StringResult> resetPassword(@Body ResetPassworParam param);
+
+    //修改手机号
+    @POST("monitoredapp/monitored/changePhone")
+    Call<StringResult> changePhone(@Body ChangePhoneParam param);
+
+    //获取个人基本信息
+    @POST("monitoredapp/monitored/getBaseInfo")
+    Call<BaseInfoResult> getBaseInfo();
+
+    //获取补充信息
+    @POST("monitoredapp/monitored/getOtherInfo")
+    Call<OtherInfoResult> getOtherInfo();
+
+    //更新补充信息
+    @POST("monitoredapp/monitored/updateOtherInfo")
+    Call<StringResult> pdateOtherInfo(@Body UpdateOtherInfoParam param);
+
+    //g更新基本信息
+    @POST("monitoredapp/monitored/updateBaseInfo")
+    Call<StringResult> updateBaseInfo();
+
+    //诉求 添加评论
+    @POST("monitoredapp/appeal/submitComment")
+    Call<StringResult> commentPetition(@Body PetitionCommentParam param);
+
+    //诉求一键催办
+    @POST("monitoredapp/appeal/updateRemindes")
+    Call<StringResult> remindePtition(@Body AppealIdParam param);
+
+    //意见一键催办
+    @POST("monitoredapp/suggestion/updateRemindes")
+    Call<StringResult> remindeSuggestion(@Body SuggestionIdParam param);
+
+    //意见 添加评论
+    @POST("monitoredapp/suggestion/submitComment")
+    Call<StringResult> commentSuggestion(@Body SugestionCommentParam param);
+
+    //添加GPS
+    @POST("monitoredapp/monitored/addGps")
+    Call<StringResult> addGps(@Body AddGpsParam param);
+
+    //手机信息
+    @POST("monitoredapp/monitored/addPhoneInfo")
+    Call<StringResult> addPhoneInfo(@Body PhoneInfoParam param);
+
+    //获取通知
+    @POST("notice/pageData")
+    Call<NoticeResult> noticePage(@Body PagingParam param);
+
+    //政策法规
+    @POST("regulation/pageData")
+    Call<RegulationResult> regulationPage(@Body PagingParam param);
+
+    //法律援助
+    @POST("legalaid/pageData")
+    Call<NoticeResult> legalaidPage(@Body PagingParam param);
+
+    //法律案例
+    @POST("legalcase/pageData")
+    Call<NoticeResult> legalcasePage(@Body PagingParam param);
+
+    //首页获取新闻列表
+    @POST("news/pageData")
+    Call<NewsResult> getNews(@Body PageParam param);
+}

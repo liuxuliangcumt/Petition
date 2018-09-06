@@ -1,0 +1,60 @@
+package com.realpower.petition.adapter;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.RequestOptions;
+import com.realpower.petition.R;
+import com.realpower.petition.bean.NewsBean;
+import com.realpower.petition.net.Mate;
+import com.realpower.petition.util.GlideRoundTransform;
+import com.realpower.petition.util.GlideRoundedCornersTransformation;
+
+import java.util.List;
+
+/**
+ * Created by ruipu on 2018/8/28.
+ */
+
+public class HomeAdapter extends MyBaseAdapter<NewsBean.ListBean> {
+    public HomeAdapter(Context context, List<NewsBean.ListBean> data) {
+        super(context, data);
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder = null;
+        if (convertView == null) {
+
+            convertView = View.inflate(context, R.layout.item_listview_home, null);
+            holder = new ViewHolder();
+            convertView.setTag(holder);
+            holder.iv_icon = convertView.findViewById(R.id.iv_icon);
+            holder.tv_title = convertView.findViewById(R.id.tv_title);
+            holder.tv_content = convertView.findViewById(R.id.tv_content);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        RequestOptions options = new RequestOptions();
+        options.placeholder(R.mipmap.bg).transform(new GlideRoundedCornersTransformation());
+
+        Glide.with(context).load(data.get(position).getTitleImageUrl())
+                .apply(options)
+                .into(holder.iv_icon);
+        holder.tv_title.setText(data.get(position).getTitle());
+        holder.tv_content.setText(data.get(position).getContent());
+        return convertView;
+    }
+
+    private class ViewHolder {
+        ImageView iv_icon;
+        TextView tv_title, tv_content;
+    }
+}

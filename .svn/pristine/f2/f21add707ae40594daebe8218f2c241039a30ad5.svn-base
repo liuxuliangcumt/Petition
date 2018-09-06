@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:background="@drawable/recycleview_bg"
+    android:orientation="horizontal"
+    android:paddingTop="8dp">
+
+    <RelativeLayout
+        android:layout_width="70dp"
+        android:layout_height="88dp"
+        android:paddingBottom="4dp">
+
+        <ImageView
+            android:id="@+id/iv_state"
+            android:layout_width="31dp"
+            android:layout_height="31dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/petition_solved" />
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="已解决"
+            android:textSize="12sp" />
+
+        <!-- <TextView
+             android:id="@+id/tv_time"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignBaseline="@+id/tv_state"
+             android:layout_alignBottom="@+id/tv_state"
+             android:layout_alignParentLeft="true"
+             android:layout_alignParentStart="true"
+             android:layout_marginLeft="193dp"
+             android:layout_marginStart="193dp"
+             android:text="这是时间"
+             android:textColor="@color/c999999"
+             android:textSize="12sp" />-->
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="4dp"
+        android:paddingLeft="17dp"
+        android:paddingTop="12dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:textColor="@color/c333333"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:lines="2"
+            android:textColor="@color/c4d4d4d"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/c999999"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/c999999"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:paddingRight="13dp"
+        android:src="@drawable/iv_arrow" />
+</LinearLayout>

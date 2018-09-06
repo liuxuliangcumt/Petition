@@ -1,0 +1,93 @@
+package com.realpower.petition.fragment;
+
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.http.client.HttpRequest;
+import com.realpower.petition.R;
+import com.realpower.petition.activity.LegalaidActivity_;
+import com.realpower.petition.activity.LegalcaseActivity_;
+import com.realpower.petition.activity.NoticeActivity_;
+import com.realpower.petition.activity.RegulationActivity_;
+import com.realpower.petition.net.Mate;
+import com.realpower.petition.net.result.WeatherResult;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
+/**
+ */
+@EFragment(R.layout.fragment_home)
+public class HomeFragment extends BaseFragment {
+
+    HttpUtils httpUtils;
+
+    @ViewById
+    TextView tv_wendu, tv_type, tv_down, tv_up, tv_ganmao;
+
+    //政策法规，法律援助，法律案例  regulation，legalaid，legalcase
+    @AfterViews
+    void initView() {
+        setTitleName("首页");
+        getWeatherData();
+    }
+
+    private void getWeatherData() {
+        if (httpUtils == null) {
+            httpUtils = new HttpUtils();
+        }
+        String city = "北京";
+        httpUtils.send(HttpRequest.HttpMethod.GET, Mate.AIRPATH + city, new RequestCallBack<String>() {
+            @Override
+            public void onSuccess(ResponseInfo<String> responseInfo) {
+                Gson gson = new Gson();
+                WeatherResult result = gson.fromJson(responseInfo.result, WeatherResult.class);
+                Log.e("aaa", "首页天气  " + result.toString());
+                setData(result.getData());
+            }
+
+            @Override
+            public void onFailure(HttpException e, String msg) {
+                Log.e("aaa", "首页天气失败  ");
+            }
+
+        });
+    }
+
+    private void setData(WeatherResult.DataBean data) {
+        tv_wendu.setText(data.getWendu() + "℃");
+        tv_down.setText(data.getForecast().get(0).getLow());
+        tv_up.setText(data.getForecast().get(0).getHigh());
+        tv_type.setText(data.getForecast().get(0).getType());
+        tv_ganmao.setText("提示：" + data.getGanmao());
+    }
+
+    @Click({R.id.ll_appointment, R.id.ll_notice, R.id.ll_policy, R.id.ll_flow, R.id.ll_Legalcas, R.id.ll_legalaid})
+    void onViewClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_notice:
+                NoticeActivity_.intent(getContext()).start();
+                break;
+            case R.id.ll_policy:
+                RegulationActivity_.intent(getContext()).start();
+                break;
+            case R.id.ll_flow:
+
+                break;
+            case R.id.ll_Legalcas:
+                LegalcaseActivity_.intent(getContext()).start();
+                break;
+            case R.id.ll_legalaid:
+                LegalaidActivity_.intent(getContext()).start();
+                break;
+        }
+    }
+}

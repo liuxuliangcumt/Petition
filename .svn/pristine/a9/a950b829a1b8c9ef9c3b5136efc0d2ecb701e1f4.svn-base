@@ -1,0 +1,183 @@
+package com.realpower.petition.activity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.realpower.petition.R;
+import com.realpower.petition.fragment.BaseFragment;
+import com.realpower.petition.fragment.HomeFragment;
+import com.realpower.petition.fragment.HomeFragment_;
+import com.realpower.petition.fragment.MeFragment;
+import com.realpower.petition.fragment.MeFragment_;
+import com.realpower.petition.fragment.PetitionFragment;
+import com.realpower.petition.fragment.PetitionFragment_;
+import com.realpower.petition.fragment.PetitionSFragment;
+import com.realpower.petition.fragment.PetitionSFragment_;
+import com.realpower.petition.fragment.SuggestFragment;
+import com.realpower.petition.fragment.SuggestFragment_;
+import com.realpower.petition.net.MyCallback;
+import com.realpower.petition.net.param.PhoneInfoParam;
+import com.realpower.petition.net.result.StringResult;
+import com.realpower.petition.server.LocationServer;
+import com.realpower.petition.util.DataGenerator;
+import com.realpower.petition.util.MyToastUtils;
+import com.realpower.petition.util.SharedPreferencesHelper;
+import com.realpower.petition.util.SystemInfoUtils;
+
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+import retrofit2.Call;
+
+@EActivity
+public class MainActivity extends BaseActivity {
+
+    @ViewById(R.id.tablayout)
+    TabLayout tablayout;
+    PetitionFragment petitionFragment;
+    SuggestFragment suggestFragment;
+    MeFragment meFragment;
+    HomeFragment homeFragment;
+    PetitionSFragment petitionSFragment;
+    public static MainActivity instance;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        addClient();
+        instance = this;
+        onInitViews();
+        addPhoneInfo();
+    }
+
+
+    void onInitViews() {
+        String username = (String) SharedPreferencesHelper.getInstance().getData("username", "ff");
+        if (username.length() == 11) {
+            Intent startIntent = new Intent(this, LocationServer.class);
+            startIntent.putExtra("username", username);
+            startService(startIntent);
+        }
+        petitionSFragment = PetitionSFragment_.builder().build();
+        petitionFragment = PetitionFragment_.builder().build();
+        meFragment = MeFragment_.builder().build();
+        suggestFragment = SuggestFragment_.builder().build();
+        homeFragment = HomeFragment_.builder().build();
+        tablayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                onTabItemSelected(tab.getPosition());
+                // Tab 选中之后，改变各个Tab的状态
+                for (int i = 0; i < tablayout.getTabCount(); i++) {
+                    View view = tablayout.getTabAt(i).getCustomView();
+                    ImageView icon = (ImageView) view.findViewById(R.id.tab_content_image);
+                    TextView text = (TextView) view.findViewById(R.id.tab_content_text);
+                    if (i == tab.getPosition()) { // 选中状态
+                        icon.setImageResource(DataGenerator.mTabResPressed[i]);
+                        //   text.setTextColor(getResources().getColor(android.R.color.black));
+                    } else {// 未选中状态
+                        icon.setImageResource(DataGenerator.mTabRes[i]);
+                        //  text.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        for (int i = 0; i < 4; i++) {
+            tablayout.addTab(tablayout.newTab().setCustomView(DataGenerator.getTabView(this, i)));
+        }
+    }
+
+    private void onTabItemSelected(int position) {
+        BaseFragment fragment = null;
+        switch (position) {
+            case 0:
+                fragment = homeFragment;
+                break;
+            case 1:
+                fragment = petitionSFragment;
+                break;
+            case 2:
+                fragment = suggestFragment;
+                break;
+
+            case 3:
+                fragment = meFragment;
+                break;
+        }
+        switchContent(fragment);
+    }
+
+    /**
+     * 修改显示的内容 不会重新加载
+     **/
+    public void switchContent(Fragment to) {
+        if (mContent != to) {
+            FragmentTransaction transaction = getSupportFragmentManager()
+                    .beginTransaction();
+            if (!to.isAdded()) { // 先判断是否被add过
+                transaction.hide(mContent).add(R.id.home_container, to).commit(); // 隐藏当前的fragment，add下一个到Activity中
+            } else {
+                transaction.hide(mContent).show(to).commit(); // 隐藏当前的fragment，显示下一个
+            }
+            mContent = to;
+        }
+    }
+
+    private Fragment mContent = new Fragment();
+
+    private void addPhoneInfo() {
+        Call<StringResult> call = apiService.addPhoneInfo(new PhoneInfoParam(SystemInfoUtils.getDeviceId(this),
+                SystemInfoUtils.getNewMac()));
+        call.enqueue(new MyCallback<StringResult>() {
+            @Override
+            public void onSuccessRequest(StringResult result) {
+
+            }
+
+            @Override
+            public void afterRequest() {
+
+            }
+
+            @Override
+            public void onFailureRequest(Call<StringResult> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private long mExitTime = 0;
+
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            MyToastUtils.showToast("再按一次退出应用");
+            mExitTime = System.currentTimeMillis();
+            return;
+        } else if ((System.currentTimeMillis() - mExitTime) < 2000) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+            return;
+        }
+        super.onBackPressed();
+    }
+}
